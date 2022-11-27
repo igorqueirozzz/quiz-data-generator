@@ -1,0 +1,1 @@
+package dev.queiroz.quizdatagenerator.util

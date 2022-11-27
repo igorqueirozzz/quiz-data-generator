@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.NewQuizActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/new_quiz_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/color_primary"
+        android:theme="@style/Theme.AppCompat.NoActionBar" />
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/quiz_stepper_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/new_quiz_toolbar"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        tools:progress="33" />
+
+    <fragment
+        android:id="@+id/nav_host_new_quiz"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/quiz_stepper_progress"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/quiz_navigation" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/fab_next_quiz_step"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="16dp"
+            android:elevation="8dp"
+            android:text="@string/next"
+            android:textColor="@color/white"
+            app:icon="@drawable/ic_arrow_right"
+            app:iconTint="@color/white" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/fab_back_quiz_step"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_margin="16dp"
+            android:elevation="8dp"
+            android:text="@string/back"
+            android:textColor="@color/white"
+            app:icon="@drawable/ic_arrow_left"
+            app:iconTint="@color/white" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

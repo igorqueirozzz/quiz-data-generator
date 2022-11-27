@@ -1,0 +1,30 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Quiz Data Generator</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_about">About</string>
+    <string name="new_quiz">New Quiz</string>
+    <string name="quiz_categories">Quiz Categories</string>
+    <string name="quiz_name">Quiz Name</string>
+    <string name="quiz_questions_and_answers">Quiz Questions and Answers</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="quiz_category">Category</string>
+    <string name="next">Next</string>
+    <string name="back">Back</string>
+    <string name="name_doted">Name:</string>
+    <string name="icon_name_doted">Icon name:</string>
+    <string name="categories_added">Categories Added</string>
+    <string name="category_icon">Category Icon</string>
+    <string name="add">add</string>
+    <string name="question">Question</string>
+    <string name="add_answer">Add Answer</string>
+    <string name="answer">Answer</string>
+    <string name="source">Source</string>
+    <string name="save_question">Save Question</string>
+    <string name="answers_added">Answers Added</string>
+    <string name="save_quiz">Save Quiz</string>
+    <string name="cancel">Cancel</string>
+    <string name="category_must_be_informed">Category\'s name must be informed.</string>
+</resources>
