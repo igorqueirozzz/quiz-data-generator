@@ -2,29 +2,36 @@ package dev.queiroz.quizdatagenerator.activity
 
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
+import dagger.hilt.android.AndroidEntryPoint
 import dev.queiroz.quizdatagenerator.MyApplication
 import dev.queiroz.quizdatagenerator.R
 import dev.queiroz.quizdatagenerator.databinding.ActivityNewQuizBinding
 import kotlinx.android.synthetic.main.activity_new_quiz.*
 import javax.inject.Inject
-
+@AndroidEntryPoint
 class NewQuizActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNewQuizBinding
     private lateinit var navController: NavController
     private var categoryCount: Int = 0
 
-    @Inject
-    lateinit var newQuizViewModel: NewQuizViewModel
+    private val newQuizViewModel by viewModels<NewQuizViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (application as MyApplication).appComponent.inject(this)
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.navigation_new_quiz_step1,
+                R.id.navigation_new_quiz_step2
+            )
+        )
         binding = ActivityNewQuizBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.newQuizToolbar)
@@ -32,12 +39,7 @@ class NewQuizActivity : AppCompatActivity() {
         supportActionBar?.setHomeButtonEnabled(false)
 
         navController = findNavController(R.id.nav_host_new_quiz)
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_new_quiz_step1,
-                R.id.navigation_new_quiz_step2
-            )
-        )
+
         setupActionBarWithNavController(navController, appBarConfiguration)
         setBackAndNextButtonObserversAndListeners()
         setDataListeners()

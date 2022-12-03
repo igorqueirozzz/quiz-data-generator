@@ -3,10 +3,12 @@ package dev.queiroz.quizdatagenerator.activity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.queiroz.quizdatagenerator.model.Category
 import javax.inject.Inject
 
-class NewQuizViewModel @Inject constructor() : ViewModel() {
+@HiltViewModel
+class NewQuizViewModel @Inject constructor(): ViewModel() {
     private val _stepper = MutableLiveData(0)
     val stepper: LiveData<Int> = _stepper
 
@@ -23,7 +25,15 @@ class NewQuizViewModel @Inject constructor() : ViewModel() {
     }
 
     fun addCategory(category: Category){
-        _categories.value?.add(category)
+        val list = categories.value
+        list?.add(category)
+        _categories.value = list
+    }
+
+    fun removeCategory(index: Int){
+        val list = categories.value
+        list?.removeAt(index)
+        _categories.value = list
     }
 
 }

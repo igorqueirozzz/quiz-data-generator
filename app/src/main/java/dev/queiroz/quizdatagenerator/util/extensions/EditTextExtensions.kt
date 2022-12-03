@@ -1,4 +1,4 @@
-package dev.queiroz.quizdatagenerator.util
+package dev.queiroz.quizdatagenerator.util.extensions
 
 import android.widget.EditText
 

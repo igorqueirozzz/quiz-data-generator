@@ -1,12 +1,8 @@
 package dev.queiroz.quizdatagenerator
 
 import android.app.Application
-import dev.queiroz.quizdatagenerator.di.AppComponent
-import dev.queiroz.quizdatagenerator.di.DaggerAppComponent
+import dagger.hilt.android.HiltAndroidApp
 
-
-open class MyApplication : Application() {
-    val appComponent: AppComponent by lazy {
-        DaggerAppComponent.factory().create(applicationContext)
-    }
+@HiltAndroidApp
+class MyApplication : Application() {
 }
