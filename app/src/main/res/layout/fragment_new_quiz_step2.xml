@@ -63,13 +63,20 @@
             android:inputType="textMultiLine" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <CheckBox
+        android:id="@+id/cb_isCorrect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="It's correct."
+        android:layout_below="@id/til_answer"/>
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_answer_source"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/til_answer"
+        android:layout_below="@id/cb_isCorrect"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         app:endIconDrawable="@drawable/ic_scan"
         app:endIconMode="custom">
@@ -113,11 +120,11 @@
 
         <TextView
             android:id="@+id/lb_category_added"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/step1_divider1"
             android:layout_marginStart="16dp"
-            android:text="@string/answers_added"
+            android:text="@string/questions_added"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -130,7 +137,7 @@
             android:background="@android:color/darker_gray" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_categories"
+            android:id="@+id/recycler_answers"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/lb_category_added"
