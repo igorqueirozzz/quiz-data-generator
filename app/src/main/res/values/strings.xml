@@ -27,4 +27,7 @@
     <string name="save_quiz">Save Quiz</string>
     <string name="cancel">Cancel</string>
     <string name="category_must_be_informed">Category\'s name must be informed.</string>
+    <string name="questions_added">Questions Added</string>
+    <string name="correct">Correct</string>
+    <string name="Incorrect">incorrect</string>
 </resources>

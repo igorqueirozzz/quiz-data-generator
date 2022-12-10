@@ -5,4 +5,6 @@
     <color name="color_primary_light">#64d8cb</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="green">#31B600</color>
+    <color name="red">#D80000</color>
 </resources>
