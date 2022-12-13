@@ -1,4 +1,4 @@
-package dev.queiroz.quizdatagenerator.ui.fragment.quiz.adapter
+package dev.queiroz.quizdatagenerator.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import dev.queiroz.quizdatagenerator.R
-import dev.queiroz.quizdatagenerator.model.Category
+import dev.queiroz.quizdatagenerator.data.entity.Category
 
 class CategoryRecyclerViewAdapter(private val dataSet: List<Category>) :
     RecyclerView.Adapter<CategoryRecyclerViewAdapter.ViewHolder>() {

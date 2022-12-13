@@ -3,17 +3,18 @@ package dev.queiroz.quizdatagenerator.activity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.queiroz.quizdatagenerator.model.Answer
-import dev.queiroz.quizdatagenerator.model.Category
-import dev.queiroz.quizdatagenerator.model.Question
+import dev.queiroz.quizdatagenerator.data.entity.*
+import dev.queiroz.quizdatagenerator.data.repository.QuestionRepository
+import dev.queiroz.quizdatagenerator.data.repository.QuizRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class NewQuizViewModel @Inject constructor() : ViewModel() {
-    private val _stepper = MutableLiveData(0)
-    val stepper: LiveData<Int> = _stepper
-
+class QuizViewModel @Inject constructor(private val quizRepository: QuizRepository) : ViewModel() {
     private val _categories = MutableLiveData(mutableListOf<Category>())
     val categories: LiveData<MutableList<Category>> = _categories
 
@@ -26,13 +27,13 @@ class NewQuizViewModel @Inject constructor() : ViewModel() {
     private val _alertMessage = MutableLiveData<String>()
     val alertMessage: LiveData<String> = _alertMessage
 
-    fun nextStep() {
-        if (_stepper.value == 0) _stepper.value = (_stepper.value!! + 1)
-    }
+    val quizList: LiveData<List<Quiz>> = quizRepository.readAllData
 
-    fun backStep() {
-        _stepper.value = (_stepper.value!! - 1)
-        if (_stepper.value!! < 0) _stepper.value = 0
+    fun addQuiz(quizName: String){
+        viewModelScope.launch(Dispatchers.IO){
+            quizRepository.addQuiz(Quiz(name = quizName))
+        }
+       // _alertMessage.value = "Quiz $quizName successfully added."
     }
 
     fun addCategory(category: Category) {
@@ -60,11 +61,10 @@ class NewQuizViewModel @Inject constructor() : ViewModel() {
             val list = _questions.value
             list?.add(
                 Question(
-                    id = null,
-                    category = category,
+                    categoryId = category.id,
                     questionText = questionText,
                     source = source,
-                    answers = answers.value!!
+                    answerList = AnswerList(answers.value!!)
                 )
             )
             _questions.value = list

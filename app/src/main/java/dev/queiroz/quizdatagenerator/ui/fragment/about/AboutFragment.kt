@@ -1,4 +1,4 @@
-package dev.queiroz.quizdatagenerator.ui.fragment.main.about
+package dev.queiroz.quizdatagenerator.ui.fragment.about
 
 import android.os.Bundle
 import android.view.LayoutInflater

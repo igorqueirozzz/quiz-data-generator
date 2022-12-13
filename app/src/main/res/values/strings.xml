@@ -30,4 +30,6 @@
     <string name="questions_added">Questions Added</string>
     <string name="correct">Correct</string>
     <string name="Incorrect">incorrect</string>
+    <string name="type_new_quiz_name">Type new quiz name:</string>
+    <string name="nothing_here">Nothing here...</string>
 </resources>

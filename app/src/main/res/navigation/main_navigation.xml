@@ -7,18 +7,27 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="dev.queiroz.quizdatagenerator.ui.fragment.main.home.HomeFragment"
+        android:name="dev.queiroz.quizdatagenerator.ui.fragment.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_from_home_to_notifications"
             app:destination="@id/navigation_notifications"/>
+        <action
+            android:id="@+id/action_from_home_to_quiz_fragment"
+            app:destination="@id/quiz_fragment"/>
     </fragment>
 
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="dev.queiroz.quizdatagenerator.ui.fragment.main.about.AboutFragment"
+        android:name="dev.queiroz.quizdatagenerator.ui.fragment.about.AboutFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_about" />
+
+    <fragment
+        android:id="@+id/quiz_fragment"
+        android:name="dev.queiroz.quizdatagenerator.ui.fragment.quiz.QuizFragment"
+        android:label="fragment_quiz"
+        tools:layout="@layout/fragment_quiz" />
 </navigation>
