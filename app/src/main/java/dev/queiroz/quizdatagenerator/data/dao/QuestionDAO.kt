@@ -8,5 +8,5 @@ import dev.queiroz.quizdatagenerator.data.entity.Question
 @Dao
 interface QuestionDAO : BaseDao<Question>{
     @Query("SELECT * FROM question_table")
-    abstract fun readAllData():LiveData<List<Question>>
+    fun readAllData():LiveData<List<Question>>
 }

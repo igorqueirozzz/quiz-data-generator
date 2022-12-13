@@ -8,8 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import dev.queiroz.quizdatagenerator.R
 import dev.queiroz.quizdatagenerator.data.entity.Category
 
-class CategoryRecyclerViewAdapter(private val dataSet: List<Category>) :
+class CategoryRecyclerViewAdapter() :
     RecyclerView.Adapter<CategoryRecyclerViewAdapter.ViewHolder>() {
+
+    private var dataSet: List<Category> = listOf()
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val categoryNameTextView: TextView
@@ -34,4 +36,9 @@ class CategoryRecyclerViewAdapter(private val dataSet: List<Category>) :
     }
 
     override fun getItemCount() = dataSet.count()
+
+    fun setData(dataSet: List<Category>){
+        this.dataSet = dataSet
+        notifyDataSetChanged()
+    }
 }

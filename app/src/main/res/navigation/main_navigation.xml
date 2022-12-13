@@ -29,5 +29,9 @@
         android:id="@+id/quiz_fragment"
         android:name="dev.queiroz.quizdatagenerator.ui.fragment.quiz.QuizFragment"
         android:label="fragment_quiz"
-        tools:layout="@layout/fragment_quiz" />
+        tools:layout="@layout/fragment_quiz" >
+        <argument
+            android:name="currentQuiz"
+            app:argType="dev.queiroz.quizdatagenerator.data.entity.Quiz" />
+    </fragment>
 </navigation>

@@ -6,16 +6,19 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import dev.queiroz.quizdatagenerator.data.converter.GsonTypeConverter
+import dev.queiroz.quizdatagenerator.data.dao.CategoryDAO
 import dev.queiroz.quizdatagenerator.data.dao.QuestionDAO
 import dev.queiroz.quizdatagenerator.data.dao.QuizDAO
+import dev.queiroz.quizdatagenerator.data.entity.Category
 import dev.queiroz.quizdatagenerator.data.entity.Question
 import dev.queiroz.quizdatagenerator.data.entity.Quiz
 
-@Database(entities = [Quiz::class, Question::class], version = 1, exportSchema = false)
+@Database(entities = [Quiz::class, Category::class, Question::class], version = 1, exportSchema = false)
 @TypeConverters(value = [GsonTypeConverter::class])
 abstract class AppDatabase : RoomDatabase(){
     abstract fun questionDAO(): QuestionDAO
     abstract fun quizDAO(): QuizDAO
+    abstract fun categoryDAO(): CategoryDAO
 
     companion object{
          const val DB_NAME = "app_database"

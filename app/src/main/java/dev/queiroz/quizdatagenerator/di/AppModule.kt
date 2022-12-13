@@ -9,13 +9,11 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import dev.queiroz.quizdatagenerator.data.dao.CategoryDAO
 import dev.queiroz.quizdatagenerator.data.dao.QuestionDAO
 import dev.queiroz.quizdatagenerator.data.dao.QuizDAO
 import dev.queiroz.quizdatagenerator.data.database.AppDatabase
-import dev.queiroz.quizdatagenerator.data.repository.QuestionRepository
-import dev.queiroz.quizdatagenerator.data.repository.QuestionRepositoryDatabase
-import dev.queiroz.quizdatagenerator.data.repository.QuizRepository
-import dev.queiroz.quizdatagenerator.data.repository.QuizRepositoryFromDatabase
+import dev.queiroz.quizdatagenerator.data.repository.*
 import javax.inject.Singleton
 
 @Module
@@ -29,6 +27,7 @@ abstract class AppModule {
                 .databaseBuilder(appContext, AppDatabase::class.java, AppDatabase.DB_NAME)
                 .build()
         }
+
         @Singleton
         @Provides
         fun provideQuestionDao(@ApplicationContext context: Context): QuestionDAO {
@@ -40,14 +39,24 @@ abstract class AppModule {
         fun provideQuizDAO(@ApplicationContext context: Context): QuizDAO {
             return AppDatabase.getDatabase(context).quizDAO()
         }
+
+        @Singleton
+        @Provides
+        fun provideCategoryDAO(@ApplicationContext context: Context): CategoryDAO {
+            return AppDatabase.getDatabase(context).categoryDAO()
+        }
     }
 
 
     @Binds
     @Singleton
     abstract fun bindQuestionRepository(questionRepositoryDatabase: QuestionRepositoryDatabase): QuestionRepository
+
     @Binds
     @Singleton
     abstract fun bindQuizRepository(quizRepositoryDatabase: QuizRepositoryFromDatabase): QuizRepository
+
+    @Binds
+    abstract fun bindCategoryRepository(categoryRepositoryFromDatabase: CategoryRepositoryFromDatabase): CategoryRepository
 
 }
