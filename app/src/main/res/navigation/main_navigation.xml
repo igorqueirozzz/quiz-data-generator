@@ -33,5 +33,17 @@
         <argument
             android:name="currentQuiz"
             app:argType="dev.queiroz.quizdatagenerator.data.entity.Quiz" />
+        <action
+            android:id="@+id/action_quiz_fragment_to_categoryFragment"
+            app:destination="@id/categoryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="dev.queiroz.quizdatagenerator.ui.fragment.category.CategoryFragment"
+        android:label="fragment_category"
+        tools:layout="@layout/fragment_category" >
+        <argument
+            android:name="categorySelected"
+            app:argType="dev.queiroz.quizdatagenerator.data.entity.Category" />
     </fragment>
 </navigation>

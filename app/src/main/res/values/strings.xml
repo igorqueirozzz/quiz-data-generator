@@ -32,4 +32,6 @@
     <string name="Incorrect">incorrect</string>
     <string name="type_new_quiz_name">Type new quiz name:</string>
     <string name="nothing_here">Nothing here...</string>
+    <string name="description_doted">Description:</string>
+    <string name="number_of_answers_doted">Number of answers:</string>
 </resources>

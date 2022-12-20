@@ -11,45 +11,73 @@ import dev.queiroz.quizdatagenerator.data.repository.QuestionRepository
 import dev.queiroz.quizdatagenerator.data.repository.QuizRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class QuizViewModel @Inject constructor(private val quizRepository: QuizRepository, private val categoryRepository: CategoryRepository) : ViewModel() {
+class QuizViewModel @Inject constructor(
+    private val quizRepository: QuizRepository,
+    private val categoryRepository: CategoryRepository,
+    private val questionRepository: QuestionRepository
+) : ViewModel() {
 
     var categories: LiveData<List<Category>> = categoryRepository.findAllByQuiz(0)
+    var questions: LiveData<List<Question>> = questionRepository.findByCategoryId(0L)
     val quizList: LiveData<List<Quiz>> = quizRepository.readAllData
 
     private val _currentFragmentName: MutableLiveData<String> = MutableLiveData("Home")
     val currentFragmentName = _currentFragmentName
 
-    var quiz: Quiz = Quiz("")
+    private val _answers: MutableLiveData<MutableList<Answer>> = MutableLiveData(mutableListOf())
+    val answers: LiveData<MutableList<Answer>> = _answers
 
-    fun addQuiz(quizName: String){
-        viewModelScope.launch(Dispatchers.IO){
+    var quiz: Quiz = Quiz("")
+    var category: Category = Category("", null, 0L)
+
+    fun addQuiz(quizName: String) {
+        viewModelScope.launch(Dispatchers.IO) {
             quizRepository.addQuiz(Quiz(name = quizName))
         }
     }
 
     fun addCategory(category: Category) {
-        viewModelScope.launch(Dispatchers.IO){
+        viewModelScope.launch(Dispatchers.IO) {
             categoryRepository.addCategory(category)
         }
     }
 
+    fun addQuestion(questionText: String, source: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            questionRepository.addQuestion(
+                Question(
+                    questionText = questionText,
+                    source = source,
+                    answerList = AnswerList(answers.value!!.toList()),
+                    categoryId = category.id,
+                    quizId = quiz.id
+                )
+            )
+        }
+    }
+
+    fun addAnswer(answer: Answer){
+        val list = _answers.value
+        list?.add(answer)
+        _answers.value = list!!
+    }
+
     fun removeCategory(category: Category) {
-        viewModelScope.launch(Dispatchers.IO){
+        viewModelScope.launch(Dispatchers.IO) {
             categoryRepository.deleteCategory(category)
         }
     }
 
 
-    fun setCurrentQuiz(quiz: Quiz){
+    fun setCurrentQuiz(quiz: Quiz) {
         this.quiz = quiz
         categories = categoryRepository.findAllByQuiz(quiz.id)
     }
 
-    fun setCurrentFragmentName(fragmentName: String){
+    fun setCurrentFragmentName(fragmentName: String) {
         _currentFragmentName.value = fragmentName
     }
 

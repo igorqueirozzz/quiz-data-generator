@@ -3,52 +3,55 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/category_row_layout">
+    android:id="@+id/question_row_layout">
 
     <TextView
-        android:id="@+id/lb_name"
+        android:id="@+id/lb_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="@string/name_doted"
+        android:text="@string/description_doted"
         android:textSize="16sp"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/tv_category_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/tv_question_description"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
         android:layout_marginStart="6dp"
         android:layout_marginEnd="16dp"
-        android:layout_toRightOf="@id/lb_name"
+        android:layout_toEndOf="@id/lb_description"
         android:textSize="16sp"
-        tools:text="Patologia" />
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:singleLine="true"
+        tools:text="@tools:sample/lorem/random" />
 
     <TextView
-        android:id="@+id/lb_icon"
+        android:id="@+id/lb_number_of_answers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/lb_name"
+        android:layout_below="@id/lb_description"
         android:layout_marginStart="16dp"
-        android:text="@string/icon_name_doted"
+        android:text="@string/number_of_answers_doted"
         android:textSize="16sp"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/tv_icon_name"
+        android:id="@+id/tv_number_of_answers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/lb_name"
+        android:layout_below="@id/lb_description"
         android:layout_marginStart="6dp"
         android:layout_marginEnd="16dp"
-        android:layout_toRightOf="@id/lb_icon"
+        android:layout_toEndOf="@id/lb_number_of_answers"
         android:textSize="16sp"
-        tools:text="icon" />
+        tools:text="4" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@id/tv_icon_name"
+        android:layout_below="@id/tv_number_of_answers"
         android:layout_margin="6dp"
         android:background="@android:color/darker_gray" />
 

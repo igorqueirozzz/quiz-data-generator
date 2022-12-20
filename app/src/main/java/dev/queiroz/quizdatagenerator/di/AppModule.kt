@@ -6,7 +6,6 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.queiroz.quizdatagenerator.data.dao.CategoryDAO
@@ -50,7 +49,7 @@ abstract class AppModule {
 
     @Binds
     @Singleton
-    abstract fun bindQuestionRepository(questionRepositoryDatabase: QuestionRepositoryDatabase): QuestionRepository
+    abstract fun bindQuestionRepository(questionRepositoryDatabase: QuestionRepositoryFromDatabase): QuestionRepository
 
     @Binds
     @Singleton

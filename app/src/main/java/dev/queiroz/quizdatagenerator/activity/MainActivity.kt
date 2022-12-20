@@ -2,9 +2,9 @@ package dev.queiroz.quizdatagenerator.activity
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -15,10 +15,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.queiroz.quizdatagenerator.R
 import dev.queiroz.quizdatagenerator.data.entity.Category
 import dev.queiroz.quizdatagenerator.databinding.ActivityMainBinding
-import dev.queiroz.quizdatagenerator.util.extensions.isTextNullOrBlank
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -42,6 +38,7 @@ class MainActivity : AppCompatActivity() {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         navView.setupWithNavController(navController)
+
         setClickListeners()
         setObservers()
     }
