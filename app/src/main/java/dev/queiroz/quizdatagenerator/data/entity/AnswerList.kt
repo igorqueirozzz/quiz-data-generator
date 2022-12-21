@@ -1,3 +1,7 @@
 package dev.queiroz.quizdatagenerator.data.entity
 
-data class AnswerList(val answers: List<Answer>)
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+data class AnswerList(val answers: List<Answer>): Parcelable

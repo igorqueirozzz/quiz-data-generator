@@ -1,9 +1,12 @@
 package dev.queiroz.quizdatagenerator.data.entity
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity(tableName = "question_table", foreignKeys = [ForeignKey(
     entity = Category::class,
     parentColumns = arrayOf("id"),
@@ -15,11 +18,11 @@ ForeignKey(
     childColumns = arrayOf("quizId")
 )])
 data class Question(
-    val questionText: String,
-    val source: String,
-    val answerList: AnswerList,
+    var questionText: String,
+    var source: String,
+    var answerList: AnswerList,
     val categoryId: Long,
-    val quizId: Long){
+    val quizId: Long): Parcelable{
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0L
 }

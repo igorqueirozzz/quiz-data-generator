@@ -59,10 +59,25 @@ class QuizViewModel @Inject constructor(
         }
     }
 
-    fun addAnswer(answer: Answer){
+    fun updateQuestion(question: Question){
+        viewModelScope.launch(Dispatchers.IO) {
+            questionRepository.updateQuestion(question)
+        }
+    }
+
+    fun addAnswer(answer: String) {
+        val list = _answers.value
+        list?.add(Answer(description = answer, false))
+        _answers.value = list!!
+    }
+    fun addAnswer(answer: Answer) {
         val list = _answers.value
         list?.add(answer)
         _answers.value = list!!
+    }
+
+    fun clearAnswerList(){
+        _answers.value = mutableListOf()
     }
 
     fun removeCategory(category: Category) {
@@ -71,14 +86,31 @@ class QuizViewModel @Inject constructor(
         }
     }
 
+    fun updateAnswerCorrect(updatedAnswer: Answer) {
+        answers.value!!.find { it.description == updatedAnswer.description }?.isCorrect =
+            updatedAnswer.isCorrect
+    }
 
+    fun removeAnswerFromQuestion(answer: Answer){
+
+    }
+    fun removeAnswerFromAnswersCreateList(answer: Answer){
+        val list = _answers.value
+        list?.remove(answer)
+        _answers.value = list ?: mutableListOf()
+    }
     fun setCurrentQuiz(quiz: Quiz) {
         this.quiz = quiz
-        categories = categoryRepository.findAllByQuiz(quiz.id)
+        categories = categoryRepository.findAllByQuiz(quizId = quiz.id)
     }
 
     fun setCurrentFragmentName(fragmentName: String) {
         _currentFragmentName.value = fragmentName
+    }
+
+    fun setCurrentCategory(category: Category) {
+        this.category = category
+        questions = questionRepository.findByCategoryId(categoryId = category.id)
     }
 
 }

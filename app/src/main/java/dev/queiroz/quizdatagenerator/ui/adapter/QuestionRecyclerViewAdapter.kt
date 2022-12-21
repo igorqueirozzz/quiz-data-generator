@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import dev.queiroz.quizdatagenerator.R
 import dev.queiroz.quizdatagenerator.data.entity.Category
 import dev.queiroz.quizdatagenerator.data.entity.Question
+import dev.queiroz.quizdatagenerator.ui.fragment.category.CategoryFragmentDirections
 import dev.queiroz.quizdatagenerator.ui.fragment.quiz.QuizFragmentDirections
 
 class QuestionRecyclerViewAdapter() :
@@ -40,7 +41,8 @@ class QuestionRecyclerViewAdapter() :
         holder.questionDescription.text = dataSet[position].questionText
         holder.numberOfAnswers.text = dataSet[position].answerList.answers.count().toString()
         holder.questionRow.setOnClickListener {
-
+            val action = CategoryFragmentDirections.actionCategoryFragmentToQuestionFragment().setQuestionOnEdition(dataSet[position])
+            holder.itemView.findNavController().navigate(action)
         }
     }
 

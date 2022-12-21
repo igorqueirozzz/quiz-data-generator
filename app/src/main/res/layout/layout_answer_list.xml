@@ -5,7 +5,7 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/tv_index"
+        android:id="@+id/tv_answer_index"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="6dp"
         android:layout_marginEnd="16dp"
-        android:layout_toRightOf="@id/tv_index"
+        android:layout_toRightOf="@id/tv_answer_index"
         android:textSize="16sp"
         tools:text="Patologia" />
 
@@ -30,10 +30,18 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="6dp"
         android:layout_marginEnd="16dp"
-        android:layout_toRightOf="@id/tv_index"
-        android:layout_below="@id/tv_answer"
+        android:layout_toRightOf="@id/cb_is_answer_correct"
+        android:layout_alignBaseline="@id/cb_is_answer_correct"
         android:textSize="16sp"
-        tools:text="Correct" />
+        android:text="@string/correct" />
+
+    <CheckBox
+        android:id="@+id/cb_is_answer_correct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_below="@id/tv_answer"/>
+
 
 
     <View

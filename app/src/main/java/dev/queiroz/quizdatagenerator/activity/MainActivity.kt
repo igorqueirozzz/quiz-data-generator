@@ -2,6 +2,7 @@ package dev.queiroz.quizdatagenerator.activity
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -50,7 +51,7 @@ class MainActivity : AppCompatActivity() {
     private fun setClickListeners() {
         binding.fabAddQuiz.setOnClickListener {
             val alert = AlertDialog.Builder(this)
-            when(quizViewModel.currentFragmentName.value){
+            when (quizViewModel.currentFragmentName.value) {
                 "Home" -> {
                     val input = EditText(this)
                     alert.setView(input)
@@ -61,6 +62,7 @@ class MainActivity : AppCompatActivity() {
                             quizViewModel.addQuiz(input.text.toString())
                         }
                     }
+                    alert.show()
                 }
                 quizViewModel.quiz.name -> {
                     val layout = LinearLayout(applicationContext)
@@ -76,13 +78,23 @@ class MainActivity : AppCompatActivity() {
 
                     alert.setPositiveButton("Ok") { _, _ ->
                         if (validateInput(input)) {
-                            quizViewModel.addCategory(Category(description = input.text.toString(), icon = input2.text.toString(), quiz = quizViewModel.quiz.id))
+                            quizViewModel.addCategory(
+                                Category(
+                                    description = input.text.toString(),
+                                    icon = input2.text.toString(),
+                                    quiz = quizViewModel.quiz.id
+                                )
+                            )
                         }
                     }
+                    alert.show()
+                }
+                quizViewModel.category.description -> {
+                    findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.action_categoryFragment_to_questionFragment)
+                    hideBottomBar()
                 }
             }
 
-            alert.show()
         }
     }
 
@@ -91,9 +103,18 @@ class MainActivity : AppCompatActivity() {
         return !input.text.isNullOrBlank()
     }
 
-    private fun setObservers(){
-        quizViewModel.currentFragmentName.observe(this ){
+    private fun setObservers() {
+        quizViewModel.currentFragmentName.observe(this) {
             supportActionBar?.title = it
         }
+    }
+    public fun hideBottomBar(){
+        binding.bottomAppBar.visibility = View.GONE
+        binding.fabAddQuiz.visibility = View.GONE
+    }
+
+    public fun showBottomBar(){
+        binding.bottomAppBar.visibility = View.VISIBLE
+        binding.fabAddQuiz.visibility = View.VISIBLE
     }
 }

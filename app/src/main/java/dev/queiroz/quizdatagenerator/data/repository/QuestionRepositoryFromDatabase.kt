@@ -13,4 +13,6 @@ class QuestionRepositoryFromDatabase @Inject constructor(private val questionDAO
         questionDAO.findByCategoryId(categoryId)
 
     override suspend fun addQuestion(question: Question) = questionDAO.insert(question)
+
+    override suspend fun updateQuestion(question: Question) = questionDAO.update(question)
 }

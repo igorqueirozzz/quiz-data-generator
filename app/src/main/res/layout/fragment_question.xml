@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="6dp"
-    tools:context=".ui.fragment.QuestionFragment">
+    tools:context=".ui.fragment.question.QuestionFragment">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_category"
@@ -29,14 +29,33 @@
         android:layout_height="150dp"
         android:layout_below="@id/til_category"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp">
+        android:layout_marginEnd="16dp"
+        app:endIconDrawable="@drawable/ic_scan"
+        app:endIconMode="custom">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tie_question"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:enabled="false"
-            android:hint="Question" />
+            android:hint="@string/question" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_source"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/til_question"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:endIconDrawable="@drawable/ic_scan"
+        app:endIconMode="custom">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tie_source"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/source" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -44,27 +63,38 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/til_question"
+        android:layout_below="@id/til_source"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp">
+        android:layout_marginEnd="16dp"
+        app:endIconDrawable="@drawable/ic_scan"
+        app:endIconMode="custom">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tie_answer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:enabled="false"
-            tools:hint="Answer" />
+            android:hint="@string/answer" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btn_add_answer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/til_answer"
+        android:layout_marginStart="16dp"
+        android:text="@string/add_answer" />
+
 
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@id/til_answer"
+        android:layout_below="@id/btn_add_answer"
         android:layout_margin="5dp"
         android:background="@android:color/darker_gray" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/answers_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/divider"
@@ -72,11 +102,15 @@
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_save_question"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_margin="16dp" />
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="32dp"
+        android:src="@drawable/ic_save"
+        app:tint="@color/white" />
 
 
 </RelativeLayout>
