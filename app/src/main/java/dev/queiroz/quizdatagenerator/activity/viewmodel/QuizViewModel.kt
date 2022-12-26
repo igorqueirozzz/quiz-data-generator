@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.queiroz.quizdatagenerator.data.entity.*
 import dev.queiroz.quizdatagenerator.data.repository.CategoryRepository
@@ -20,8 +21,8 @@ class QuizViewModel @Inject constructor(
     private val questionRepository: QuestionRepository
 ) : ViewModel() {
 
-    var categories: LiveData<List<Category>> = categoryRepository.findAllByQuiz(0)
-    var questions: LiveData<List<Question>> = questionRepository.findByCategoryId(0L)
+    var categories: LiveData<List<Category>> = categoryRepository.findAllByQuizLiveData(0)
+    var questions: LiveData<List<Question>> = questionRepository.findByCategoryIdLiveData(0L)
     val quizList: LiveData<List<Quiz>> = quizRepository.readAllData
 
     private val _currentFragmentName: MutableLiveData<String> = MutableLiveData("Home")
@@ -29,6 +30,9 @@ class QuizViewModel @Inject constructor(
 
     private val _answers: MutableLiveData<MutableList<Answer>> = MutableLiveData(mutableListOf())
     val answers: LiveData<MutableList<Answer>> = _answers
+
+    private val _jsonExport: MutableLiveData<String> = MutableLiveData()
+    val jsonObject = _jsonExport
 
     var quiz: Quiz = Quiz("")
     var category: Category = Category("", null, 0L)
@@ -87,12 +91,6 @@ class QuizViewModel @Inject constructor(
         _answers.value = mutableListOf()
     }
 
-    fun deleteCategory(category: Category) =
-        viewModelScope.launch(Dispatchers.IO) {
-            categoryRepository.deleteCategory(category)
-        }
-
-
     fun updateAnswerCorrect(updatedAnswer: Answer) {
         answers.value!!.find { it.description == updatedAnswer.description }?.isCorrect =
             updatedAnswer.isCorrect
@@ -106,7 +104,7 @@ class QuizViewModel @Inject constructor(
 
     fun setCurrentQuiz(quiz: Quiz) {
         this.quiz = quiz
-        categories = categoryRepository.findAllByQuiz(quizId = quiz.id)
+        categories = categoryRepository.findAllByQuizLiveData(quizId = quiz.id)
     }
 
     fun setCurrentFragmentName(fragmentName: String) {
@@ -115,7 +113,17 @@ class QuizViewModel @Inject constructor(
 
     fun setCurrentCategory(category: Category) {
         this.category = category
-        questions = questionRepository.findByCategoryId(categoryId = category.id)
+        questions = questionRepository.findByCategoryIdLiveData(categoryId = category.id)
+    }
+
+    fun exportQuizAsJsonFromList(position: Int){
+        viewModelScope.launch(Dispatchers.IO){
+            val mQuiz = quizList.value!![position]
+            val categories = categoryRepository.findAllByQuiz(quizId = mQuiz.id)
+            val questions = questionRepository.findAllByQuiz(quizId = mQuiz.id)
+            val json = Gson().toJson(QuizDataWrapper(quiz = mQuiz, categories = categories, questions = questions))
+            _jsonExport.postValue(json)
+        }
     }
 
 }

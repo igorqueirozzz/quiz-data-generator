@@ -7,5 +7,8 @@ import dev.queiroz.quizdatagenerator.data.entity.Category
 @Dao
 interface CategoryDAO : BaseDao<Category> {
     @Query("SELECT * FROM category_table WHERE quiz = :quizId")
-    fun findAllByQuiz(quizId: Long): LiveData<List<Category>>
+    fun findAllByQuizLiveData(quizId: Long): LiveData<List<Category>>
+
+    @Query("SELECT * FROM category_table WHERE quiz = :quizId")
+    fun findAllByQuiz(quizId: Long): List<Category>
 }

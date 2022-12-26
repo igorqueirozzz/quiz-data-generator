@@ -14,16 +14,20 @@ import dev.queiroz.quizdatagenerator.data.entity.Quiz
 import dev.queiroz.quizdatagenerator.ui.fragment.home.HomeFragment
 import dev.queiroz.quizdatagenerator.ui.fragment.home.HomeFragmentDirections
 
-class QuizRecyclerViewAdapter() :
+class QuizRecyclerViewAdapter(private val optionMenuClickListener: OptionMenuClickListener) :
     RecyclerView.Adapter<QuizRecyclerViewAdapter.ViewHolder>() {
-
+    interface OptionMenuClickListener{
+        fun onOptionMenuClick(position: Int)
+    }
     private var dataSet: List<Quiz> = listOf()
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val quizNameTextView: TextView
+        val textViewOptionMenu: TextView
         val quizRowLayout: RelativeLayout
         init {
             quizNameTextView = view.findViewById(R.id.tv_quiz_name)
+            textViewOptionMenu = view.findViewById(R.id.tv_options)
             quizRowLayout = view.findViewById(R.id.quiz_row_layout)
         }
     }
@@ -39,6 +43,9 @@ class QuizRecyclerViewAdapter() :
         holder.quizRowLayout.setOnClickListener{
             val action = HomeFragmentDirections.actionFromHomeToQuizFragment(dataSet[position])
             holder.itemView.findNavController().navigate(action)
+        }
+        holder.textViewOptionMenu.setOnClickListener {
+            optionMenuClickListener.onOptionMenuClick(position)
         }
     }
 

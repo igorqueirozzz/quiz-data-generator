@@ -4,7 +4,8 @@ import androidx.lifecycle.LiveData
 import dev.queiroz.quizdatagenerator.data.entity.Category
 
 interface CategoryRepository {
-    fun findAllByQuiz(quizId: Long): LiveData<List<Category>>
+    fun findAllByQuizLiveData(quizId: Long): LiveData<List<Category>>
+    fun findAllByQuiz(quizId: Long): List<Category>
     suspend fun addCategory(category: Category)
     suspend fun updateCategory(category: Category)
     suspend fun deleteCategory(category: Category)

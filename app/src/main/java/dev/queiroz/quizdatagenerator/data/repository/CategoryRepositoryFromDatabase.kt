@@ -7,7 +7,8 @@ import javax.inject.Inject
 
 class CategoryRepositoryFromDatabase @Inject constructor(private val categoryDAO: CategoryDAO) : CategoryRepository {
 
-    override fun findAllByQuiz(quizId: Long): LiveData<List<Category>> = categoryDAO.findAllByQuiz(quizId)
+    override fun findAllByQuizLiveData(quizId: Long): LiveData<List<Category>> = categoryDAO.findAllByQuizLiveData(quizId)
+    override fun findAllByQuiz(quizId: Long): List<Category> = categoryDAO.findAllByQuiz(quizId)
 
     override suspend fun addCategory(category: Category) {
         categoryDAO.insert(category)

@@ -236,7 +236,6 @@ class QuestionFragment : Fragment() {
             textRecognizer.process(image).addOnSuccessListener {
                 for (block in it.textBlocks) {
                     stringBuilder.append(block.text)
-                    stringBuilder.append("\n")
                 }
                 editText.setText(stringBuilder.toString())
             }.addOnFailureListener {

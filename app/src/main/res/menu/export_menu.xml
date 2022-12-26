@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/export_as_json"
+        android:title="Export as Json"
+        android:icon="@drawable/ic_json"/>
+</menu>

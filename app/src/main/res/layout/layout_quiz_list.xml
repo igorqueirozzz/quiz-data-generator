@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="6dp"
+    android:padding="8dp"
     android:id="@+id/quiz_row_layout">
 
     <TextView
@@ -25,13 +26,24 @@
         android:textSize="21sp"
         tools:text="Patologia" />
 
+    <TextView
+        android:id="@+id/tv_options"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:text="⋮"
+        android:layout_marginEnd="6dp"
+        android:textSize="25sp"
+        android:textStyle="bold"/>
+
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@id/tv_quiz_name"
+        android:layout_alignParentBottom="true"
         android:layout_margin="6dp"
         android:background="@android:color/darker_gray" />
+
 
 
 </RelativeLayout>
