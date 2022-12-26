@@ -9,7 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dev.queiroz.quizdatagenerator.R
-import dev.queiroz.quizdatagenerator.activity.QuizViewModel
+import dev.queiroz.quizdatagenerator.activity.viewmodel.QuizViewModel
 import dev.queiroz.quizdatagenerator.databinding.FragmentHomeBinding
 import dev.queiroz.quizdatagenerator.ui.adapter.QuizRecyclerViewAdapter
 

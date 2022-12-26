@@ -9,6 +9,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import dev.queiroz.quizdatagenerator.R
 import dev.queiroz.quizdatagenerator.data.entity.Category
+import dev.queiroz.quizdatagenerator.data.entity.Question
 import dev.queiroz.quizdatagenerator.ui.fragment.quiz.QuizFragmentDirections
 
 class CategoryRecyclerViewAdapter() :
@@ -36,7 +37,7 @@ class CategoryRecyclerViewAdapter() :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.categoryNameTextView.text = dataSet[position].description
+        holder.categoryNameTextView.text = dataSet[position].name
         holder.categoryIconTextView.text = dataSet[position].icon
         holder.categoryRow.setOnClickListener {
             val action =
@@ -51,4 +52,5 @@ class CategoryRecyclerViewAdapter() :
         this.dataSet = dataSet
         notifyDataSetChanged()
     }
+    fun getItem(position: Int): Category = dataSet[position]
 }

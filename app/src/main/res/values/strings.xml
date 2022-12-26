@@ -34,4 +34,5 @@
     <string name="nothing_here">Nothing here...</string>
     <string name="description_doted">Description:</string>
     <string name="number_of_answers_doted">Number of answers:</string>
+    <string name="number_doted">Number:</string>
 </resources>

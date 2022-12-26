@@ -4,15 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import dev.queiroz.quizdatagenerator.activity.QuizViewModel
+import dev.queiroz.quizdatagenerator.activity.viewmodel.QuizViewModel
 import dev.queiroz.quizdatagenerator.databinding.FragmentCategoryBinding
 import dev.queiroz.quizdatagenerator.ui.adapter.QuestionRecyclerViewAdapter
+import dev.queiroz.quizdatagenerator.util.helper.SwipeToDeleteCallback
 
 class CategoryFragment : Fragment() {
     private lateinit var binding: FragmentCategoryBinding
@@ -27,7 +28,7 @@ class CategoryFragment : Fragment() {
     ): View {
         binding = FragmentCategoryBinding.inflate(inflater, container, false)
         questionRecyclerView = binding.questionRecycler
-        quizViewModel.setCurrentFragmentName(args.categorySelected.description)
+        quizViewModel.setCurrentFragmentName(args.categorySelected.name)
         quizViewModel.setCurrentCategory(args.categorySelected)
         setupRecyclerView()
         setupObservers()
@@ -38,6 +39,18 @@ class CategoryFragment : Fragment() {
         questionRecyclerView.setHasFixedSize(true)
         questionRecyclerView.layoutManager = LinearLayoutManager(context)
         questionRecyclerView.adapter = adapter
+
+        val swipeToDelete = object : SwipeToDeleteCallback(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                val question = adapter.getItem(position)
+                quizViewModel.deleteQuestion(question = question)
+            }
+
+        }
+
+        val itemTouchHelper = ItemTouchHelper(swipeToDelete)
+        itemTouchHelper.attachToRecyclerView(questionRecyclerView)
     }
 
     private fun setupObservers(){

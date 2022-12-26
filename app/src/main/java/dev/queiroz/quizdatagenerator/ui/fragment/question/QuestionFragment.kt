@@ -1,26 +1,38 @@
 package dev.queiroz.quizdatagenerator.ui.fragment.question
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import dev.queiroz.quizdatagenerator.activity.MainActivity
-import dev.queiroz.quizdatagenerator.activity.QuizViewModel
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.text.TextRecognition
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions
+import com.theartofdev.edmodo.cropper.CropImage
+import dev.queiroz.quizdatagenerator.activity.main.MainActivity
+import dev.queiroz.quizdatagenerator.activity.viewmodel.QuizViewModel
 import dev.queiroz.quizdatagenerator.data.entity.Answer
 import dev.queiroz.quizdatagenerator.data.entity.AnswerList
 import dev.queiroz.quizdatagenerator.databinding.FragmentQuestionBinding
 import dev.queiroz.quizdatagenerator.ui.adapter.AnswerRecyclerViewAdapter
 import dev.queiroz.quizdatagenerator.ui.adapter.OnItemUpdate
 import dev.queiroz.quizdatagenerator.util.helper.SwipeToDeleteCallback
+import java.io.ByteArrayOutputStream
 
 class QuestionFragment : Fragment() {
     private lateinit var binding: FragmentQuestionBinding
@@ -31,19 +43,52 @@ class QuestionFragment : Fragment() {
     private val adapter = AnswerRecyclerViewAdapter()
     private val quizViewModel: QuizViewModel by activityViewModels()
     private val args by navArgs<QuestionFragmentArgs>()
+    private lateinit var takePictureQuestionTextLauncher: ActivityResultLauncher<Intent>
+    private lateinit var cropPictureQuestionTextLauncher: ActivityResultLauncher<Intent>
+    private lateinit var takePictureSourceTextLauncher: ActivityResultLauncher<Intent>
+    private lateinit var cropPictureSourceTextLauncher: ActivityResultLauncher<Intent>
+    private lateinit var takePictureAnswerTextLauncher: ActivityResultLauncher<Intent>
+    private lateinit var cropPictureAnswerTextLauncher: ActivityResultLauncher<Intent>
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentQuestionBinding.inflate(inflater, container, false)
-        binding.tieCategory.setText(quizViewModel.category.description)
-        quizViewModel.setCurrentFragmentName(quizViewModel.category.description)
+        binding.tieCategory.setText(quizViewModel.category.name)
+        quizViewModel.setCurrentFragmentName(quizViewModel.category.name)
         answerRecyclerView = binding.answersRecycler
         answerEditText = binding.tieAnswer
         questionEditText = binding.tieQuestion
         sourceEditText = binding.tieSource
         (activity as MainActivity).hideBottomBar()
+
+        cropPictureQuestionTextLauncher = cropImageLauncherBuilder(object : CropImageCallback {
+            override fun onResult(obj: Bitmap) {
+                getTextFromBitmapSetOnField(questionEditText, obj)
+            }
+
+        })
+        takePictureQuestionTextLauncher = takePictureLauncher(cropPictureQuestionTextLauncher)
+
+
+        cropPictureSourceTextLauncher = cropImageLauncherBuilder(object : CropImageCallback {
+            override fun onResult(obj: Bitmap) {
+                getTextFromBitmapSetOnField(sourceEditText, obj)
+            }
+        })
+
+        takePictureSourceTextLauncher = takePictureLauncher(cropPictureSourceTextLauncher)
+
+        cropPictureAnswerTextLauncher = cropImageLauncherBuilder(object : CropImageCallback {
+            override fun onResult(obj: Bitmap) {
+                getTextFromBitmapSetOnField(answerEditText, obj)
+            }
+        })
+
+        takePictureAnswerTextLauncher = takePictureLauncher(cropPictureAnswerTextLauncher)
+
         checkArgs()
         setupRecyclerView()
         setupObservers()
@@ -51,12 +96,31 @@ class QuestionFragment : Fragment() {
         return binding.root
     }
 
+
     override fun onPause() {
         if (activity is MainActivity) {
             (activity as MainActivity).showBottomBar()
         }
         quizViewModel.clearAnswerList()
         super.onPause()
+    }
+
+    override fun onResume() {
+        if (activity is MainActivity) {
+            (activity as MainActivity).hideBottomBar()
+        }
+        super.onResume()
+    }
+
+    private fun checkArgs() {
+        if (args.questionOnEdition != null) {
+            with(args.questionOnEdition) {
+                questionEditText.setText(this!!.description)
+                sourceEditText.setText(this.source)
+                this.answerList.answers.forEach { quizViewModel.addAnswer(it) }
+                this.answerList.answers = mutableListOf()
+            }
+        }
     }
 
     private fun setupRecyclerView() {
@@ -83,15 +147,6 @@ class QuestionFragment : Fragment() {
         itemTouchHelper.attachToRecyclerView(answerRecyclerView)
     }
 
-    private fun checkArgs() {
-        if (args.questionOnEdition != null) {
-            with(args.questionOnEdition) {
-                questionEditText.setText(this!!.questionText)
-                sourceEditText.setText(this!!.source)
-                this.answerList.answers.forEach { quizViewModel.addAnswer(it) }
-            }
-        }
-    }
 
     private fun setupObservers() {
         quizViewModel.answers.observe(viewLifecycleOwner) {
@@ -100,9 +155,25 @@ class QuestionFragment : Fragment() {
     }
 
     private fun setupListeners() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         binding.run {
             btnAddAnswer.setOnClickListener { addAnswer() }
-            fabSaveQuestion.setOnClickListener { if (args.questionOnEdition != null) addQuestion() else updateQuestion() }
+            fabSaveQuestion.setOnClickListener { if (args.questionOnEdition == null) addQuestion() else updateQuestion() }
+            tilQuestion.setEndIconOnClickListener {
+                takePictureQuestionTextLauncher.launch(
+                    takePictureIntent
+                )
+            }
+            tilSource.setEndIconOnClickListener {
+                takePictureSourceTextLauncher.launch(
+                    takePictureIntent
+                )
+            }
+            tilAnswer.setEndIconOnClickListener {
+                takePictureAnswerTextLauncher.launch(
+                    takePictureIntent
+                )
+            }
         }
     }
 
@@ -119,10 +190,11 @@ class QuestionFragment : Fragment() {
     private fun updateQuestion() {
         if (validateAddQuestion()) {
             val question = args.questionOnEdition!!
-            question.questionText = questionEditText.text.toString()
+            question.description = questionEditText.text.toString()
             question.source = sourceEditText.text.toString()
             question.answerList = AnswerList(quizViewModel.answers.value!!.toList())
             quizViewModel.updateQuestion(question)
+            findNavController().navigateUp()
         }
     }
 
@@ -134,8 +206,49 @@ class QuestionFragment : Fragment() {
         }
     }
 
+
+    private fun takePictureLauncher(nextIntentLauncher: ActivityResultLauncher<Intent>): ActivityResultLauncher<Intent> {
+        return registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                val result = it.data?.extras?.get("data") as Bitmap
+                val intent =
+                    CropImage.activity(getImageUriFromBitmap(result)).getIntent(requireContext())
+                nextIntentLauncher.launch(intent)
+            }
+        }
+    }
+
+
+    private fun cropImageLauncherBuilder(callback: CropImageCallback) =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            val result = CropImage.getActivityResult(it.data)
+            val resultUri = result.uri
+            val bitmap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, resultUri)
+            callback.onResult(bitmap)
+        }
+
+
+    private fun getTextFromBitmapSetOnField(editText: EditText, bitmap: Bitmap?) {
+        val textRecognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+        val image = bitmap?.let { InputImage.fromBitmap(it, 0) }
+        val stringBuilder = StringBuilder()
+        if (image != null) {
+            textRecognizer.process(image).addOnSuccessListener {
+                for (block in it.textBlocks) {
+                    stringBuilder.append(block.text)
+                    stringBuilder.append("\n")
+                }
+                editText.setText(stringBuilder.toString())
+            }.addOnFailureListener {
+                Toast.makeText(context, "${it.message}", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            Toast.makeText(context, "Image not recognized, try again.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     private fun validateAddQuestion(): Boolean {
-        if (questionEditText.text.toString().isNullOrBlank()) {
+        if (questionEditText.text.toString().isBlank()) {
             Toast.makeText(context, "Question can't be empty.", Toast.LENGTH_SHORT).show()
             return false
         } else if (quizViewModel.answers.value?.isEmpty() == true) {
@@ -154,12 +267,27 @@ class QuestionFragment : Fragment() {
     }
 
     private fun validateAddAnswer(): Boolean {
-        if (answerEditText.text.toString().isNullOrBlank()) {
+        if (answerEditText.text.toString().isBlank()) {
             Toast.makeText(context, "Answer can't be empty.", Toast.LENGTH_SHORT).show()
             return false
         }
         return true
     }
 
+    private fun getImageUriFromBitmap(bitmap: Bitmap): Uri {
+        val bytes = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path = MediaStore.Images.Media.insertImage(
+            requireContext().contentResolver,
+            bitmap,
+            "Image",
+            null
+        )
+        return Uri.parse(path)
+    }
 
+}
+
+private interface CropImageCallback {
+    fun onResult(obj: Bitmap)
 }

@@ -4,4 +4,4 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class AnswerList(val answers: List<Answer>): Parcelable
+data class AnswerList(var answers: List<Answer>): Parcelable

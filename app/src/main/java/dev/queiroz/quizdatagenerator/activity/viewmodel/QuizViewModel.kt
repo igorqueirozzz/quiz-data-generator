@@ -1,4 +1,4 @@
-package dev.queiroz.quizdatagenerator.activity
+package dev.queiroz.quizdatagenerator.activity.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -33,23 +33,23 @@ class QuizViewModel @Inject constructor(
     var quiz: Quiz = Quiz("")
     var category: Category = Category("", null, 0L)
 
-    fun addQuiz(quizName: String) {
+    fun addQuiz(quizName: String) =
         viewModelScope.launch(Dispatchers.IO) {
             quizRepository.addQuiz(Quiz(name = quizName))
         }
-    }
 
-    fun addCategory(category: Category) {
+
+    fun addCategory(category: Category) =
         viewModelScope.launch(Dispatchers.IO) {
             categoryRepository.addCategory(category)
         }
-    }
 
-    fun addQuestion(questionText: String, source: String) {
+
+    fun addQuestion(questionText: String, source: String) =
         viewModelScope.launch(Dispatchers.IO) {
             questionRepository.addQuestion(
                 Question(
-                    questionText = questionText,
+                    description = questionText,
                     source = source,
                     answerList = AnswerList(answers.value!!.toList()),
                     categoryId = category.id,
@@ -57,48 +57,53 @@ class QuizViewModel @Inject constructor(
                 )
             )
         }
-    }
 
-    fun updateQuestion(question: Question){
+
+    fun updateQuestion(question: Question) {
+        question.answerList.answers = _answers.value!!.toList()
         viewModelScope.launch(Dispatchers.IO) {
             questionRepository.updateQuestion(question)
         }
     }
+
+
+    fun deleteQuestion(question: Question) =
+        viewModelScope.launch(Dispatchers.IO) { questionRepository.deleteQuestion(question) }
+
 
     fun addAnswer(answer: String) {
         val list = _answers.value
         list?.add(Answer(description = answer, false))
         _answers.value = list!!
     }
+
     fun addAnswer(answer: Answer) {
         val list = _answers.value
         list?.add(answer)
         _answers.value = list!!
     }
 
-    fun clearAnswerList(){
+    fun clearAnswerList() {
         _answers.value = mutableListOf()
     }
 
-    fun removeCategory(category: Category) {
+    fun deleteCategory(category: Category) =
         viewModelScope.launch(Dispatchers.IO) {
             categoryRepository.deleteCategory(category)
         }
-    }
+
 
     fun updateAnswerCorrect(updatedAnswer: Answer) {
         answers.value!!.find { it.description == updatedAnswer.description }?.isCorrect =
             updatedAnswer.isCorrect
     }
 
-    fun removeAnswerFromQuestion(answer: Answer){
-
-    }
-    fun removeAnswerFromAnswersCreateList(answer: Answer){
+    fun removeAnswerFromAnswersCreateList(answer: Answer) {
         val list = _answers.value
         list?.remove(answer)
         _answers.value = list ?: mutableListOf()
     }
+
     fun setCurrentQuiz(quiz: Quiz) {
         this.quiz = quiz
         categories = categoryRepository.findAllByQuiz(quizId = quiz.id)

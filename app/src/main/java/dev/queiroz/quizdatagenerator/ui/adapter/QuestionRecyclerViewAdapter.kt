@@ -8,10 +8,8 @@ import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import dev.queiroz.quizdatagenerator.R
-import dev.queiroz.quizdatagenerator.data.entity.Category
 import dev.queiroz.quizdatagenerator.data.entity.Question
 import dev.queiroz.quizdatagenerator.ui.fragment.category.CategoryFragmentDirections
-import dev.queiroz.quizdatagenerator.ui.fragment.quiz.QuizFragmentDirections
 
 class QuestionRecyclerViewAdapter() :
     RecyclerView.Adapter<QuestionRecyclerViewAdapter.ViewHolder>() {
@@ -21,11 +19,13 @@ class QuestionRecyclerViewAdapter() :
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val questionDescription: TextView
         val numberOfAnswers: TextView
+        val questionNumber: TextView
         val questionRow: RelativeLayout
 
         init {
             questionDescription = view.findViewById(R.id.tv_question_description)
             numberOfAnswers = view.findViewById(R.id.tv_number_of_answers)
+            questionNumber = view.findViewById(R.id.tv_question_number)
             questionRow = view.findViewById(R.id.question_row_layout)
         }
     }
@@ -38,8 +38,9 @@ class QuestionRecyclerViewAdapter() :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.questionDescription.text = dataSet[position].questionText
+        holder.questionDescription.text = dataSet[position].description
         holder.numberOfAnswers.text = dataSet[position].answerList.answers.count().toString()
+        holder.questionNumber.text = dataSet[position].id.toString()
         holder.questionRow.setOnClickListener {
             val action = CategoryFragmentDirections.actionCategoryFragmentToQuestionFragment().setQuestionOnEdition(dataSet[position])
             holder.itemView.findNavController().navigate(action)
@@ -52,4 +53,5 @@ class QuestionRecyclerViewAdapter() :
         this.dataSet = dataSet
         notifyDataSetChanged()
     }
+    fun getItem(position: Int): Question = dataSet[position]
 }

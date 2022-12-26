@@ -15,4 +15,6 @@ class QuestionRepositoryFromDatabase @Inject constructor(private val questionDAO
     override suspend fun addQuestion(question: Question) = questionDAO.insert(question)
 
     override suspend fun updateQuestion(question: Question) = questionDAO.update(question)
+
+    override suspend fun deleteQuestion(question: Question) = questionDAO.delete(question)
 }

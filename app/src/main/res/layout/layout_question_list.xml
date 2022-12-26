@@ -6,11 +6,32 @@
     android:id="@+id/question_row_layout">
 
     <TextView
+        android:id="@+id/lb_question_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/number_doted"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_question_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        tools:text="1"
+        android:layout_toEndOf="@id/lb_question_number"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+
+    <TextView
         android:id="@+id/lb_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="@string/description_doted"
+        android:layout_below="@id/lb_question_number"
         android:textSize="16sp"
         android:textStyle="bold" />
 
@@ -21,6 +42,7 @@
         android:layout_marginStart="6dp"
         android:layout_marginEnd="16dp"
         android:layout_toEndOf="@id/lb_description"
+        android:layout_alignBaseline="@id/lb_description"
         android:textSize="16sp"
         android:ellipsize="marquee"
         android:marqueeRepeatLimit="marquee_forever"

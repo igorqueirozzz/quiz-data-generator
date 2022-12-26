@@ -31,7 +31,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         app:endIconDrawable="@drawable/ic_scan"
-        app:endIconMode="custom">
+        app:endIconMode="custom"
+        >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tie_question"

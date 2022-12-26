@@ -8,4 +8,5 @@ interface QuestionRepository {
     fun getAllDataByQuiz(quizId: Long):LiveData<List<Question>>
     fun findByCategoryId(categoryId: Long):LiveData<List<Question>>
     suspend fun updateQuestion(question: Question)
+    suspend fun deleteQuestion(question: Question)
 }

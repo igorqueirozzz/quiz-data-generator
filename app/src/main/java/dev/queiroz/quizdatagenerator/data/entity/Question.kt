@@ -10,15 +10,17 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "question_table", foreignKeys = [ForeignKey(
     entity = Category::class,
     parentColumns = arrayOf("id"),
-    childColumns = arrayOf("categoryId")
+    childColumns = arrayOf("categoryId"),
+    onDelete = ForeignKey.CASCADE
 ),
 ForeignKey(
     entity = Quiz::class,
     parentColumns = arrayOf("id"),
-    childColumns = arrayOf("quizId")
+    childColumns = arrayOf("quizId"),
+    onDelete = ForeignKey.CASCADE
 )])
 data class Question(
-    var questionText: String,
+    var description: String,
     var source: String,
     var answerList: AnswerList,
     val categoryId: Long,

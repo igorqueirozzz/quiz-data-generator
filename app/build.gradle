@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId "dev.queiroz.quizdatagenerator"
-        minSdk 21
+        minSdk 28
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -72,6 +72,12 @@ dependencies {
     implementation ("androidx.room:room-ktx:$room_version")
     kapt ("androidx.room:room-compiler:$room_version")
 
+    //IMAGE CROP
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
+    //MOBILE VISION
+    implementation 'com.google.android.gms:play-services-vision:19.0.0'
+    implementation 'com.google.android.gms:play-services-mlkit-text-recognition:18.0.2'
+    //GSON
     implementation 'com.google.code.gson:gson:2.9.0'
 
 
