@@ -58,6 +58,9 @@ class HomeFragment : Fragment() {
         quizRecyclerView.adapter = adapter
         quizRecyclerView.setHasFixedSize(true)
         quizViewModel.quizList.observe(viewLifecycleOwner) {
+            if(it.isNotEmpty()){
+                binding.tvHomeFragment.visibility = View.GONE
+            }
            adapter.setData(it)
         }
     }

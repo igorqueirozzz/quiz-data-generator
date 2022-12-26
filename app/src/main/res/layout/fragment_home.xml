@@ -14,7 +14,6 @@
         android:text="@string/nothing_here"
         android:layout_gravity="center"
         android:textSize="21sp"
-        android:visibility="gone"
         android:gravity="center" />
 
     <androidx.recyclerview.widget.RecyclerView

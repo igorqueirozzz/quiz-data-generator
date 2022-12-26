@@ -31,8 +31,9 @@
     <string name="correct">Correct</string>
     <string name="Incorrect">incorrect</string>
     <string name="type_new_quiz_name">Type new quiz name:</string>
-    <string name="nothing_here">Nothing here...</string>
+    <string name="nothing_here">Nothing here... Try to add some data taping on \"+\" button down below.</string>
     <string name="description_doted">Description:</string>
     <string name="number_of_answers_doted">Number of answers:</string>
     <string name="number_doted">Number:</string>
+    <string name="about_text">This is a simple app to help you to create data for quiz games, with this app you can create multiple game data using your smartphone camera to extract text from books and export them as json to your future quiz game.</string>
 </resources>
