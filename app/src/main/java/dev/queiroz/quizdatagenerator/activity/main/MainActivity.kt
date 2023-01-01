@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity() {
                                 Category(
                                     name = input.text.toString(),
                                     icon = input2.text.toString(),
-                                    quiz = quizViewModel.quiz.id
+                                    quizId = quizViewModel.quiz.id
                                 )
                             )
                         }

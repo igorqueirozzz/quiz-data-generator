@@ -12,11 +12,11 @@ import kotlinx.parcelize.Parcelize
     foreignKeys = [ForeignKey(
         entity = Quiz::class,
         parentColumns = arrayOf("id"),
-        childColumns = arrayOf("quiz"),
+        childColumns = arrayOf("quizId"),
         onDelete = ForeignKey.CASCADE
     )]
 )
-data class Category(val name: String, var icon: String? = null, val quiz: Long) : Parcelable{
+data class Category(val name: String, var icon: String? = null, val quizId: Long) : Parcelable{
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0
 }
